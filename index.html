@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Práctica | Vue JS</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="./js/vue.js"></script>
+    <!-- <script src="./js/jquery-3.4.1.min.js"></script> -->
+</head>
+<body>
+
+    <div id="app">
+        <div class="row" style="width: 100%; display: flexbox; justify-content: center; margin-top: 50px;">
+            <div class="col-md-6 col-md-offset-3">
+                <template v-if="name">
+                    <h1 id="title">{{gender=='masculino' ? 'Bienvenido':'Bienvenida'}} , {{ name }}</h1>
+                    <hr>
+                    <p>Sonrie, se feliz!!!</p>
+                    <hr>
+                    <p>Tu nombre al revés es: {{name.split('').reverse().join('')}}</p>
+                </template>
+                <p v-else>Por favor escribe tu nombre:</p>
+                <hr>
+                <form @submit="signUp(false, $event)" class="form-control" style="width: 100%; height: 600px; padding: 20px; box-sizing: border-box;">
+                    <div>
+                        <label>Name:</label>
+                        <input type="text" v-model="name" class="form-control">
+                        <label>Last Name:</label>
+                        <input type="text" v-model="lastname" class="form-control">
+                        <hr>
+                        <label>Genero:</label>
+                        <br>
+                        <label class="radio-inline"><input type="radio" v-model="gender" value="masculino"> Masculino</label>
+                        <br>
+                        <label class="radio-inline"><input type="radio" v-model="gender" value="femenino"> Femenino</label>
+                        <br>
+                        <hr>
+                        <h6>¿Cuantos años de experiencia tiene con el lenguaje PHP?</h6>
+                        <div>
+                            <label>Respuesta: <strong> {{years_php}} </strong></label>
+                            <br>
+                            <button type="button" class="btn" @click="yearsMax">+</button>
+                            <button type="button" class="btn" @click="yearsMin">-</button>
+                        </div>
+                        <br>
+                        <label>Perfil:</label>
+                        <select id="gender" v-model="perfil" class="form-control">
+                            <option value="">Selecciona el perfil</option>
+                            <option value="administrator">Administrator</option>
+                            <option value="users">Users</option>
+                        </select>
+                    </div><br>
+                    <div v-show="name">
+                        <button type="submit" class="btn btn-primary">Send</button>
+
+                        <button type="submit" class="btn btn-primary" @click="signUp(true, $event)">Send and logout</button>
+                    </div>
+                </form>
+                <hr>
+                <span v-if="name == ''" class="alert alert-danger">
+                    Este campo es obligatorio ...
+                </span>
+                <hr>
+                <span v-if="name.length < 2" class="alert alert-danger">
+                    El nombre no es válido ...
+                </span>
+            </div>
+            <div class="col-md-3 col-md-offset-3">
+                <pre>{{$data | json}}</pre>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        new Vue({
+            el: '#app',
+            data: {
+                name: "",
+                lastname: "",
+                gender: "",
+                years_php: 0,
+                perfil: "" 
+            },
+            methods: {
+                signUp: function (logout, event) {
+                    event.preventDefault();
+
+                    alert(this.name + ", por favor espera mientra te registramos ...");
+
+                    if (logout) {
+                        alert("Saliendo del sistema ...");
+                    }
+                },
+                yearsMax: function () {
+                    if (this.years_php >= 0) {
+                        this.years_php ++;
+                    } else {
+                        return this.years_php = 0;                        
+                    }
+                },
+                yearsMin: function () {
+                    if (this.years_php >= 1) {
+                        this.years_php --;
+                    } else {
+                        return this.years_php = 0;                        
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- <script type="text/javascript">
+        signUp: function (event) {
+            event.preventDefault();
+                    alert("Enviados ...");
+                }
+        $(document).ready(function () {
+            $('#name').keyup(function () {
+                $('#title').text("Bienvenido " + $('#name').val());
+            });
+        });
+    </script> -->
+
+    <!-- 
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
+    -->
+</body>
+</html>
