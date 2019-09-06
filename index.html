@@ -24,28 +24,30 @@
                 <p v-else>Por favor escribe tu nombre:</p>
                 <hr>
                 <form @submit="signUp(false, $event)" class="form-control" style="width: 100%; height: 100%; padding: 20px; box-sizing: border-box;">
-                    <div>
-                        <label>Name:</label>
-                        <input type="text" v-model="name" class="form-control">
-                        <label>Last Name:</label>
-                        <input type="text" v-model="lastname" class="form-control">
-                        <hr>
-                        <label>Genero:</label>
-                        <br>
-                        <label class="radio-inline"><input type="radio" v-model="gender" value="masculino"> Masculino</label>
-                        <br>
-                        <label class="radio-inline"><input type="radio" v-model="gender" value="femenino"> Femenino</label>
-                        <br>
-                        <hr>
-                        <years-exp :years="years_php" tech="PHP"></years-exp>
-                        <br>
-                        <label>Perfil:</label>
-                        <select id="gender" v-model="perfil" class="form-control">
-                            <option value="">Selecciona el perfil</option>
-                            <option value="administrator">Administrator</option>
-                            <option value="users">Users</option>
-                        </select>
-                    </div><br>
+                    <label>Name:</label>
+                    <input type="text" v-model="name" class="form-control">
+                    <label>Last Name:</label>
+                    <input type="text" v-model="lastname" class="form-control">
+                    <hr>
+                    <label>Genero:</label>
+                    <br>
+                    <label class="radio-inline"><input type="radio" v-model="gender" value="masculino"> Masculino</label>
+                    <br>
+                    <label class="radio-inline"><input type="radio" v-model="gender" value="femenino"> Femenino</label>
+                    <br>
+
+                    <hr>
+                    <years-exp :years.sync="years_php" tech="PHP"></years-exp>
+                    <years-exp :years.sync="years_js" tech="JS"></years-exp>
+                    <br>
+
+                    <label>Perfil:</label>
+                    <select id="gender" v-model="perfil" class="form-control">
+                        <option value="">Selecciona el perfil</option>
+                        <option value="administrator">Administrator</option>
+                        <option value="users">Users</option>
+                    </select>
+                    <br>
                     <div v-show="name">
                         <button type="submit" class="btn btn-primary">Send</button>
 
@@ -73,12 +75,14 @@
     </script>
 
     <script type="text/template" id="years_template">
-        <h6>¿Cuantos años de experiencia tiene con el lenguaje {{tech}}?</h6>
         <div>
-            <label>Respuesta: <strong> {{years}} </strong></label>
-            <br>
-            <button type="button" class="btn" @click="Max">+</button>
-            <button type="button" :disabled="years == 0" class="btn" @click="Min">-</button>
+            <h6>¿Cuantos años de experiencia tiene con el lenguaje {{tech}}?</h6>
+            <div>
+                <label>Respuesta: <strong> {{years}} </strong></label>
+                <br>
+                <button type="button" class="btn" @click="Max">+</button>
+                <button type="button" :disabled="years == 0" class="btn" @click="Min">-</button>
+            </div>
         </div>
     </script>
 
@@ -97,23 +101,21 @@
 
         Vue.component('years-exp', {
             template: '#years_template',
-            methods: {
-                Max: function () {
-                    // if (this.years_php >= 0) {
-                        this.years++;
-                    // } else {
-                    //     return this.years_php = 0;                        
-                    // }
-                },
-                Min: function () {
-                    // if (this.years_php >= 1) {
-                        this.years--;
-                    // } else {
-                    //     return this.years_php = 0;                        
-                    // }
+            data: function (){
+                return {
+                    years: 0,
+                    tech: ''
                 }
             },
-            props: []
+            methods: {
+                Max: function () {
+                    this.years++;
+                },
+                Min: function () {
+                    this.years--;
+                }
+            },
+            // props: ['years','tech']
         });
 
         new Vue({
@@ -123,6 +125,7 @@
                 lastname: "",
                 gender: "masculino",
                 years_php: 0,
+                years_js: 0,
                 perfil: "" 
             },
             methods: {
