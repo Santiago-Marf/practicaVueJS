@@ -23,7 +23,7 @@
                 </template>
                 <p v-else>Por favor escribe tu nombre:</p>
                 <hr>
-                <form @submit="signUp(false, $event)" class="form-control" style="width: 100%; height: 600px; padding: 20px; box-sizing: border-box;">
+                <form @submit="signUp(false, $event)" class="form-control" style="width: 100%; height: 100%; padding: 20px; box-sizing: border-box;">
                     <div>
                         <label>Name:</label>
                         <input type="text" v-model="name" class="form-control">
@@ -37,15 +37,7 @@
                         <label class="radio-inline"><input type="radio" v-model="gender" value="femenino"> Femenino</label>
                         <br>
                         <hr>
-                        <hello-world></hello-world>
-                        <!-- <years-exp tech="PHP"></years-exp> -->
-                        <!-- <h6>¿Cuantos años de experiencia tiene con el lenguaje PHP?</h6>
-                        <div>
-                            <label>Respuesta: <strong> {{years_php}} </strong></label>
-                            <br>
-                            <button type="button" class="btn" @click="yearsMax">+</button>
-                            <button type="button" class="btn" @click="yearsMin">-</button>
-                        </div> -->
+                        <years-exp :years="years_php" tech="PHP"></years-exp>
                         <br>
                         <label>Perfil:</label>
                         <select id="gender" v-model="perfil" class="form-control">
@@ -60,6 +52,7 @@
                         <button type="submit" class="btn btn-primary" @click="signUp(true, $event)">Send and logout</button>
                     </div>
                 </form>
+                <hello-world></hello-world>
                 <hr>
                 <span v-if="name == ''" class="alert alert-danger">
                     Este campo es obligatorio ...
@@ -79,6 +72,16 @@
         <h1 id="title">{{gender == 'masculino' ? 'Bienvenido':'Bienvenida'}}, {{ name }}</h1>
     </script>
 
+    <script type="text/template" id="years_template">
+        <h6>¿Cuantos años de experiencia tiene con el lenguaje {{tech}}?</h6>
+        <div>
+            <label>Respuesta: <strong> {{years}} </strong></label>
+            <br>
+            <button type="button" class="btn" @click="Max">+</button>
+            <button type="button" :disabled="years == 0" class="btn" @click="Min">-</button>
+        </div>
+    </script>
+
     <script type="text/javascript">
 
         Vue.component('hello-world', {
@@ -92,12 +95,33 @@
             }
         });
 
+        Vue.component('years-exp', {
+            template: '#years_template',
+            methods: {
+                Max: function () {
+                    // if (this.years_php >= 0) {
+                        this.years++;
+                    // } else {
+                    //     return this.years_php = 0;                        
+                    // }
+                },
+                Min: function () {
+                    // if (this.years_php >= 1) {
+                        this.years--;
+                    // } else {
+                    //     return this.years_php = 0;                        
+                    // }
+                }
+            },
+            props: []
+        });
+
         new Vue({
             el: '#app',
             data: {
                 name: "",
                 lastname: "",
-                gender: "",
+                gender: "masculino",
                 years_php: 0,
                 perfil: "" 
             },
@@ -109,20 +133,6 @@
 
                     if (logout) {
                         alert("Saliendo del sistema ...");
-                    }
-                },
-                yearsMax: function () {
-                    if (this.years_php >= 0) {
-                        this.years_php ++;
-                    } else {
-                        return this.years_php = 0;                        
-                    }
-                },
-                yearsMin: function () {
-                    if (this.years_php >= 1) {
-                        this.years_php --;
-                    } else {
-                        return this.years_php = 0;                        
                     }
                 }
             }
